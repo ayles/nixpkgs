@@ -19,6 +19,7 @@
 , pythonSupport ? false
 , nsync
 , flatbuffers
+, Foundation
 }:
 
 # Python Support
@@ -67,8 +68,11 @@ stdenv.mkDerivation rec {
     howard-hinnant-date
     nlohmann_json
     boost
-    oneDNN
     protobuf
+  ] ++ lib.optionals (!stdenv.isDarwin) [
+    oneDNN
+  ] ++ lib.optionals stdenv.isDarwin [
+    Foundation
   ] ++ lib.optionals pythonSupport [
     nsync
     python3Packages.numpy
@@ -93,6 +97,7 @@ stdenv.mkDerivation rec {
     "-Donnxruntime_USE_MPI=ON"
     "-Deigen_SOURCE_PATH=${eigen.src}"
     "-DFETCHCONTENT_SOURCE_DIR_ABSEIL_CPP=${abseil-cpp_202111.src}"
+  ] ++ lib.optionals (!stdenv.isDarwin) [
     "-Donnxruntime_USE_DNNL=YES"
   ] ++ lib.optionals pythonSupport [
     "-Donnxruntime_ENABLE_PYTHON=ON"

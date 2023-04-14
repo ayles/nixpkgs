@@ -5474,6 +5474,7 @@ with pkgs;
 
   onnxruntime = callPackage ../development/libraries/onnxruntime {
     protobuf = protobuf3_19;
+    inherit (darwin.apple_sdk.frameworks) Foundation;
   };
 
   xkbd = callPackage ../applications/misc/xkbd { };
